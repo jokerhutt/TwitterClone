@@ -1,8 +1,9 @@
-import './App.css'
+import '../../App.css'
 import { FaGoogle, FaApple } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import YouMightLike from './YouMightLike';
+import YouMightLike from '../YouMightLike';
+
 
 
 
@@ -17,7 +18,7 @@ function SignupSide ({currentUser, setCurrentUser, sampleUsers}) {
     const [signupPassword, setSignupPassword] = useState("");
     const [signupProfilePic, setSignupProfilePic] = useState("/DEFAULTPFP.png");
     const [signupDisplayName, setSignupDisplayName] = useState("")
-    const [signupBackground, setSignupBackground] = useState("")
+    const [signupBackground, setSignupBackground] = useState("https://www.moissonmontreal.org/wp-content/uploads/2014/11/Rectangle-Gris-Fonce-700x230.jpg")
     const [loginState, setLoginState] = useState(false);
 
     const [loginUsername, setLoginUsername] = useState("");
@@ -77,6 +78,28 @@ function SignupSide ({currentUser, setCurrentUser, sampleUsers}) {
             setSigningup(false);
         }
     }
+
+    const handleProfilePicUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSignupProfilePic(reader.result); // Convert image to base64 for preview
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    
+    const handleBackgroundUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSignupBackground(reader.result); // Convert image to base64 for preview
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     function handleUserLogin (e) {
 
@@ -241,12 +264,35 @@ function SignupSide ({currentUser, setCurrentUser, sampleUsers}) {
                                     <h1 className='text-white font-bold text-3xl'>Create your account</h1>
                                 </div>
 
-                                <div className='bg-black h-full w-full flex-[53] relative'>
+                                <div className='bg-black h-full w-full flex-[53] relative cursor-pointer'>
                                     <div className='w-full h-full'>
-                                        <img src="https://www.moissonmontreal.org/wp-content/uploads/2014/11/Rectangle-Gris-Fonce-700x230.jpg" className='w-full h-4/5'/>
+                                        <img 
+                                            src={signupBackground}
+                                            onClick={() => document.getElementById('backgroundUpload').click()} 
+                                            alt="Background" 
+                                            className='w-full h-4/5 object-cover'
+                                        />
+                                        <input
+                                            type="file"
+                                            id="backgroundUpload"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => handleBackgroundUpload(e)}
+                                        />
                                     </div>
-                                    <div className='absolute left-1/2 bottom-1/4 transform -translate-x-1/2 translate-y-1/2 z-41'>
-                                    <img src='/DEFAULTPFP.png' className='w-20 h-20 rounded-full border-4 border-black'/>
+
+                                    <div
+                                        onClick={() => document.getElementById('profilePicUpload').click()}
+                                        className='absolute left-1/2 bottom-1/4 transform -translate-x-1/2 translate-y-1/2 z-41 cursor-pointer'>
+                                        <img 
+                                            src={signupProfilePic}  
+                                            className='w-20 h-20 rounded-full border-4 border-black object-cover'
+                                        />
+                                        <input
+                                            type="file"
+                                            id="profilePicUpload"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => handleProfilePicUpload(e)}
+                                        />
                                     </div>
                                 </div>
                             

@@ -1,6 +1,5 @@
 const express = require('express');
 
-
 const app = express(); 
 const PORT = 6789; 
 
@@ -55,14 +54,32 @@ res.json(sampleUsers);
 
 app.get("/api/users/:userId", (req, res) => {
   const userId = parseInt(req.params.userId);
+  console.log("userId is " + userId);
+
   const user = users.find(user => user.id === userId);
+
+  console.log("user is: " + JSON.stringify(user));
 
   if (user) {
     res.status(200).json(user)
   } else {
     res.status(404).json({ message: 'User not found' });
   }
-  })
+})
+
+app.get("/api/users/posts/:userId", (req, res) => {
+  const userId = parseInt(req.params.userId);
+  console.log("userId is " + userId);
+
+  const userPosts = posts.filter((post) => post.userId === userId);
+  console.log(userPosts);
+
+  if (userPosts) {
+    res.status(200).json(userPosts)
+  } else {
+    res.status(404).json({ message: 'posts not found' });
+  }
+})
 
 app.get("/api/posts", (req, res) => {
   res.json(posts);
@@ -86,13 +103,13 @@ app.post("/api/signup", (req, res) => {
       userfollowing: [], 
       userliked: [], 
       profilePic: profilePic, 
-      userretweeted: [], 
-      usersaved: [], 
-      userposts: [], 
-      userbio: userBio, 
-      userreplied:[], 
-      userthreads: [], 
-      usernotifications: []
+      userRetweeted: [], 
+      userSaved: [], 
+      userPosts: [], 
+      userBio: userBio, 
+      userReplied:[], 
+      userThreads: [], 
+      userNotifications: []
     };
 
     users.push(newUser);
@@ -102,10 +119,10 @@ app.post("/api/signup", (req, res) => {
 
 app.post("/api/login", (req, res) => {
   const {username, password, email} = req.body;
-  const existingUserCheck = users.find(user => user.username === username && user.password === password)
+  const loginCheck = users.find(user => user.username === username && user.password === password)
 
-  if (existingUserCheck) {
-    res.status(201).json({ message: 'User loggin in successfully', user: existingUserCheck });
+  if (loginCheck) {
+    res.status(201).json({ message: 'User loggin in successfully', user: loginCheck });
   }
   else {
     return res.status(400).json({message: "Incorrect Email or Password"})
@@ -117,12 +134,26 @@ app.post("/api/newpost", (req, res) => {
 
   const postUser = users.find(user => user.id === userId)
 
-  const newPost = {id: (posts.length + 1), title: postTitle, media: postMedia, userId: userId, likes: [], replies: [], retweets: [], saves: []}
+  const newPost = 
+  {
+    id: (posts.length + 1), 
+    title: postTitle, 
+    media: postMedia, 
+    userId: userId, 
+    likes: [], 
+    replies: [], 
+    retweets: [], 
+    saves: []
+  }
 
   if (newPost) {
     posts.push(newPost);
     postUser.userposts.push(newPost.id);
-    res.status(201).json({ message: 'Post uploaded successfully', newPost: newPost, user: postUser});
+    res.status(201).json({ 
+      message: 'Post uploaded successfully', 
+      newPost: newPost, 
+      user: postUser
+    });
   }
   else {
     return res.status(400).json({message: "Could not Upload Post"})

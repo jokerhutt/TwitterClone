@@ -1,5 +1,5 @@
-import './App.css'
-import SignupSide from './SignupSide';
+import '../App.css'
+import SignupSide from './SignupLogin/SignupSide';
 
 function RightFeed ({currentUser, setCurrentUser, sampleUsers}) {
     return (

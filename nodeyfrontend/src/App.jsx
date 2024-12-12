@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import viteLogo from '/vite.svg'
-import RightFeed from './RightFeed'
-import LeftFeed from './LeftFeed'
-import MainFeed from './MainFeed'
+import RightFeed from './RightFeed/RightFeed'
+import LeftFeed from './LeftSide/LeftFeed'
+import MainFeed from './MiddleSide/MainFeed'
+import ProfileFeed from './MiddleSide/ProfileFeed';
 import './App.css'
 
 function App() {
@@ -28,7 +30,9 @@ function App() {
     .catch(error => console.error(error));
   }, [currentUser]);
 
+  
   return (
+    <Router>
     <>
       <div>
 
@@ -37,7 +41,28 @@ function App() {
           <LeftFeed currentUser={currentUser} setCurrentUser={setCurrentUser}/>
         </div>
         <div className='flex bg-black h-screen flex-col col-span-5'>
-          <MainFeed currentUser={currentUser} setCurrentUser={setCurrentUser} posts={posts} setPosts={setPosts}/>
+          <Routes>
+
+            <Route 
+              path="/" 
+              element={
+              <MainFeed currentUser={currentUser} setCurrentUser={setCurrentUser} posts={posts} setPosts={setPosts}/>}
+            />
+
+            <Route 
+              path="/:profileUserId" 
+              element={
+              <ProfileFeed currentUser={currentUser} setCurrentUser={setCurrentUser} posts={posts} setPosts={setPosts}/>}
+            />
+            
+
+            {/* <Route 
+              path="/explore" 
+              element={
+              <MainFeed currentUser={currentUser} setCurrentUser={setCurrentUser} posts={posts} setPosts={setPosts}/>}
+            /> */}
+
+          </Routes>
         </div>
         <div className='flex bg-black h-screen flex-col col-span-4'>
           <RightFeed sampleUsers={sampleUsers} currentUser={currentUser} setCurrentUser={setCurrentUser}/>
@@ -45,6 +70,7 @@ function App() {
       </div>
       </div>
     </>
+    </Router>
   )
 }
 

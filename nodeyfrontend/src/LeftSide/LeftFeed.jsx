@@ -2,10 +2,9 @@ import { FaBookmark, FaSearch, FaHome, FaBell, FaListAlt, FaBook, FaUser } from 
 import { IoMdMail } from "react-icons/io";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaGlobeAmericas } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
 
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-
-
 
 
 
@@ -18,38 +17,46 @@ function LeftFeed ({currentUser}) {
             </div>
 
             <div className="flex-[10] h-full w-full bg-black text-white mt-4 flex flex-col gap-6">
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                <Link to="/"className="flex gap-4 items-center text-2xl font-bold">
                     <FaHome/>
                     <p>Home</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/explore" className="flex gap-4 items-center text-2xl font-bold">
                     <FaSearch/>
                     <p>Explore</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/notifications" className="flex gap-4 items-center text-2xl font-bold">
                     <FaBell/>
                     <p>Notifications</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/messages" className="flex gap-4 items-center text-2xl font-bold">
                     <IoMdMail/>
                     <p>Messages</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/lists" className="flex gap-4 items-center text-2xl font-bold">
                     <FaListAlt/>
                     <p>Lists</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/saved" className="flex gap-4 items-center text-2xl font-bold">
                     <FaBookmark/>
                     <p>Bookmarks</p>
-                </div>
-                <div className="flex gap-4 items-center text-2xl font-bold">
+                </Link>
+                <Link to="/communities" className="flex gap-4 items-center text-2xl font-bold">
                     <FaUserGroup />
                     <p>Communities</p>
-                </div>
+                </Link>
+                {currentUser ? (
+                <Link to={`/${currentUser.id}`} className="flex gap-4 items-center text-2xl font-bold">
+                    <FaUser/>
+                    <p>Profile</p>
+                </Link>
+                ) : (
                 <div className="flex gap-4 items-center text-2xl font-bold">
                     <FaUser/>
                     <p>Profile</p>
                 </div>
+                )}
+
                 <div className="flex gap-4 items-center text-2xl font-bold">
                     <FaUserGroup/>
                     <p>More</p>

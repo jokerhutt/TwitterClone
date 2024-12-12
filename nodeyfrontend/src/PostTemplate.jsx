@@ -25,6 +25,10 @@ function PostTemplate ({post, posts}) {
 
     }, [posts])
 
+    useEffect(() => {
+        console.log("Post user template user is + " + JSON.stringify(postUser))
+    }, [postUser])
+
     return(
         <>
         {postUser ? (

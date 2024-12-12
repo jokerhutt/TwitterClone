@@ -1,4 +1,4 @@
-import "./App.css"
+import '../App.css'
 
 function YouMightLike ({sampleuser}) {
     return(
